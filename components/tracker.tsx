@@ -254,11 +254,6 @@ export function Tracker() {
             ctx.fillText("FACE", fx + 4, fy - 6)
           }
 
-          // FPS top-left
-          ctx.fillStyle = "#00d4ff"
-          ctx.font = "bold 14px monospace"
-          ctx.fillText(`FPS: ${fps}`, 12, 24)
-
           // Update tracking data
           const data: TrackingData = {
             faceDetected: !!face,
@@ -316,10 +311,10 @@ export function Tracker() {
           </div>
           <div>
             <h1 className="text-sm font-mono font-bold tracking-wider text-foreground uppercase">
-              Auto Gun Tracking System
+              Tracking System
             </h1>
             <p className="text-xs font-mono text-muted-foreground">
-              MediaPipe Face + Pose Detection
+          
             </p>
           </div>
         </div>

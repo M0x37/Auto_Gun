@@ -28,7 +28,7 @@ export function ControlsSidebar({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {streamConnected ? (
-                <Wifi className="w-4 h-4 text-green" />
+                <Wifi className="w-4 h-4 text-foreground" />
               ) : (
                 <WifiOff className="w-4 h-4 text-destructive" />
               )}
@@ -37,7 +37,7 @@ export function ControlsSidebar({
             <div className="flex items-center gap-2">
               <div
                 className={`w-2 h-2 rounded-full ${
-                  streamConnected ? "bg-green animate-pulse" : "bg-destructive"
+                  streamConnected ? "bg-foreground animate-pulse" : "bg-destructive"
                 }`}
               />
               <span className="text-xs font-mono text-muted-foreground">
@@ -47,10 +47,10 @@ export function ControlsSidebar({
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-cyan" />
+              <Activity className="w-4 h-4 text-muted-foreground" />
               <span className="text-sm font-mono text-foreground">FPS</span>
             </div>
-            <span className="text-sm font-mono font-bold text-cyan tabular-nums">
+            <span className="text-sm font-mono font-bold text-muted-foreground tabular-nums">
               {trackingData.fps}
             </span>
           </div>
@@ -65,7 +65,7 @@ export function ControlsSidebar({
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Crosshair className="w-4 h-4 text-cyan" />
+              <Crosshair className="w-4 h-4 text-muted-foreground" />
               <span className="text-sm font-mono text-foreground">Face Tracking</span>
             </div>
             <Switch
@@ -78,7 +78,7 @@ export function ControlsSidebar({
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-green" />
+              <User className="w-4 h-4 text-foreground" />
               <span className="text-sm font-mono text-foreground">Body Tracking</span>
             </div>
             <Switch
@@ -92,35 +92,46 @@ export function ControlsSidebar({
         </div>
       </div>
 
-      {/* Face Detection Data */}
+      {/* Detection Data */}
       <div className="bg-card rounded-lg border border-border p-4">
         <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
-          Face Detection
+          Detection
         </h2>
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-mono text-muted-foreground">Status</span>
-            <span
-              className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-                trackingData.faceDetected
-                  ? "bg-cyan/15 text-cyan"
-                  : "bg-destructive/15 text-destructive"
-              }`}
-            >
-              {trackingData.faceDetected ? "Face Detected" : "No Face"}
-            </span>
+            <div className="flex flex-col items-end gap-1">
+              <span
+                className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                  trackingData.faceDetected
+                    ? "bg-muted/40 text-foreground"
+                    : "bg-destructive/15 text-destructive"
+                }`}
+              >
+                {trackingData.faceDetected ? "Face Detected" : "No Face"}
+              </span>
+              <span
+                className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                  trackingData.personDetected
+                    ? "bg-muted/40 text-foreground"
+                    : "bg-destructive/15 text-destructive"
+                }`}
+              >
+                {trackingData.personDetected ? "Body Detected" : "No Body"}
+              </span>
+            </div>
           </div>
           <div className="h-px bg-border" />
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
               <span className="text-xs font-mono text-muted-foreground">X Position</span>
-              <span className="text-lg font-mono font-bold text-cyan tabular-nums">
+              <span className="text-lg font-mono font-bold text-muted-foreground tabular-nums">
                 {trackingData.faceDetected ? trackingData.faceX.toFixed(3) : "---"}
               </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-xs font-mono text-muted-foreground">Y Position</span>
-              <span className="text-lg font-mono font-bold text-cyan tabular-nums">
+              <span className="text-lg font-mono font-bold text-muted-foreground tabular-nums">
                 {trackingData.faceDetected ? trackingData.faceY.toFixed(3) : "---"}
               </span>
             </div>
@@ -136,7 +147,7 @@ export function ControlsSidebar({
             </div>
             {trackingData.faceDetected && (
               <div
-                className="absolute w-3 h-3 rounded-full bg-cyan shadow-[0_0_8px_rgba(0,212,255,0.6)] transition-all duration-150"
+                className="absolute w-3 h-3 rounded-full bg-foreground shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-150"
                 style={{
                   left: `${trackingData.faceX * 100}%`,
                   top: `${trackingData.faceY * 100}%`,
@@ -145,25 +156,6 @@ export function ControlsSidebar({
               />
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Body Detection */}
-      <div className="bg-card rounded-lg border border-border p-4">
-        <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
-          Body Detection
-        </h2>
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-mono text-muted-foreground">Status</span>
-          <span
-            className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-              trackingData.personDetected
-                ? "bg-green/15 text-green"
-                : "bg-destructive/15 text-destructive"
-            }`}
-          >
-            {trackingData.personDetected ? "Person Detected" : "No Person"}
-          </span>
         </div>
       </div>
 
