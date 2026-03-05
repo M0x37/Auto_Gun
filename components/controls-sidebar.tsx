@@ -17,6 +17,9 @@ export function ControlsSidebar({
   trackingData,
   streamConnected,
 }: ControlsSidebarProps) {
+  const hasFace = trackingData.faceDetected
+  const horizontalOffset = hasFace ? trackingData.faceX - 0.5 : 0
+
   return (
     <aside className="flex flex-col gap-4 w-full lg:w-80 shrink-0 max-h-[calc(100vh-96px)] overflow-y-auto pr-1">
       {/* System Status */}
@@ -24,7 +27,7 @@ export function ControlsSidebar({
         <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
           System Status
         </h2>
-        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {streamConnected ? (
@@ -122,35 +125,38 @@ export function ControlsSidebar({
             </div>
           </div>
           <div className="h-px bg-border" />
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex flex-col gap-1">
-              <span className="text-xs font-mono text-muted-foreground">X Position</span>
-              <span className="text-lg font-mono font-bold text-muted-foreground tabular-nums">
-                {trackingData.faceDetected ? trackingData.faceX.toFixed(3) : "---"}
-              </span>
+          {/* Visual position canvas for face + body */}
+          <div className="relative bg-secondary rounded border border-border aspect-square w-full max-w-[180px] mx-auto overflow-hidden">
+            {/* Grid */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[2px] h-full bg-border" />
             </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-xs font-mono text-muted-foreground">Y Position</span>
-              <span className="text-lg font-mono font-bold text-muted-foreground tabular-nums">
-                {trackingData.faceDetected ? trackingData.faceY.toFixed(3) : "---"}
-              </span>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-[2px] w-full bg-border" />
             </div>
-          </div>
 
-          {/* Visual position indicator */}
-          <div className="relative bg-secondary rounded border border-border aspect-square w-full max-w-[140px] mx-auto">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-px h-full bg-border" />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="h-px w-full bg-border" />
-            </div>
+            {/* Center crosshair marker */}
+            <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border/80 bg-background/60" />
+
+            {/* Face position */}
             {trackingData.faceDetected && (
               <div
                 className="absolute w-3 h-3 rounded-full bg-foreground shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-150"
                 style={{
                   left: `${trackingData.faceX * 100}%`,
                   top: `${trackingData.faceY * 100}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+              />
+            )}
+
+            {/* Body position */}
+            {trackingData.personDetected && (
+              <div
+                className="absolute w-4 h-4 rounded-full border border-foreground/70 bg-background/30 transition-all duration-150"
+                style={{
+                  left: `${trackingData.bodyX * 100}%`,
+                  top: `${trackingData.bodyY * 100}%`,
                   transform: "translate(-50%, -50%)",
                 }}
               />

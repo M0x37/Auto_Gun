@@ -3,6 +3,8 @@ export interface TrackingData {
   faceX: number // 0.0 left -> 1.0 right
   faceY: number // 0.0 top -> 1.0 bottom
   personDetected: boolean
+  bodyX: number // 0.0 left -> 1.0 right
+  bodyY: number // 0.0 top -> 1.0 bottom
   fps: number
   timestamp: number
 }
@@ -17,6 +19,8 @@ export const DEFAULT_TRACKING_DATA: TrackingData = {
   faceX: 0,
   faceY: 0,
   personDetected: false,
+  bodyX: 0,
+  bodyY: 0,
   fps: 0,
   timestamp: 0,
 }

@@ -207,6 +207,21 @@ export function Tracker() {
           const face = lastFaceRef.current
           const pose = lastPoseRef.current
 
+          // Static center crosshair (reference)
+          const cxMid = w / 2
+          const cyMid = h / 2
+          ctx.strokeStyle = "rgba(255,255,255,0.7)"
+          ctx.lineWidth = 1
+          ctx.beginPath()
+          ctx.moveTo(cxMid - 25, cyMid)
+          ctx.lineTo(cxMid + 25, cyMid)
+          ctx.moveTo(cxMid, cyMid - 25)
+          ctx.lineTo(cxMid, cyMid + 25)
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.arc(cxMid, cyMid, 5, 0, Math.PI * 2)
+          ctx.stroke()
+
           // Body box (green, dashed)
           if (settingsRef.current.bodyTrackingEnabled && pose) {
             ctx.strokeStyle = "#22c55e"
@@ -260,6 +275,8 @@ export function Tracker() {
             faceX: face ? parseFloat(face.centerX.toFixed(3)) : 0,
             faceY: face ? parseFloat(face.centerY.toFixed(3)) : 0,
             personDetected: !!pose,
+            bodyX: pose ? parseFloat((pose.x + pose.width / 2).toFixed(3)) : 0,
+            bodyY: pose ? parseFloat((pose.y + pose.height / 2).toFixed(3)) : 0,
             fps,
             timestamp: Date.now(),
           }
