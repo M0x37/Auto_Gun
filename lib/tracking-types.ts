@@ -30,4 +30,4 @@ export const DEFAULT_SETTINGS: TrackingSettings = {
   bodyTrackingEnabled: true,
 }
 
-export const STREAM_URL = "http://192.168.178.128:4747/video"
+export const STREAM_URL = "http://btq1527kep2zl2dk.myfritz.net:4747/video"
