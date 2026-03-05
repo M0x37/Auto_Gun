@@ -39,7 +39,12 @@ export function Tracker() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    // Simulate UI loading time
+    const timer = setTimeout(() => {
+      setMounted(true)
+    }, 1500) // 1.5 seconds loading time
+    
+    return () => clearTimeout(timer)
   }, [])
 
   const imgRef = useRef<HTMLImageElement>(null)
@@ -319,23 +324,45 @@ export function Tracker() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="border-b border-border px-4 py-3 lg:px-6">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded bg-cyan/10">
-            <Crosshair className="w-5 h-5 text-cyan" />
+    <>
+      {/* Loading Screen */}
+      {!mounted && (
+        <div className="fixed inset-0 bg-[#0a0a0a] flex flex-col items-center justify-center z-50">
+          <div className="relative mb-12">
+            <div className="w-20 h-20 border border-cyan/20 rounded-full"></div>
+            <div className="absolute top-0 left-0 w-20 h-20 border-2 border-cyan border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <div>
-            <h1 className="text-sm font-mono font-bold tracking-wider text-foreground uppercase">
-              Tracking System
-            </h1>
-            <p className="text-xs font-mono text-muted-foreground">
-          
+          <h2 className="text-white font-mono text-2xl font-light tracking-[0.4em] mb-3">
+            TRACKING SYSTEM
+          </h2>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-cyan rounded-full animate-pulse"></div>
+            <p className="text-gray-400 font-mono text-sm tracking-wide">
+              Initializing
             </p>
+            <div className="w-2 h-2 bg-cyan rounded-full animate-pulse delay-75"></div>
           </div>
         </div>
-      </header>
+      )}
+
+      {/* Main App */}
+      <div className="min-h-screen bg-background text-foreground">
+        {/* Header */}
+        <header className="border-b border-border px-4 py-3 lg:px-6">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded bg-cyan/10">
+              <Crosshair className="w-5 h-5 text-cyan" />
+            </div>
+            <div>
+              <h1 className="text-sm font-mono font-bold tracking-wider text-foreground uppercase">
+                Tracking System
+              </h1>
+              <p className="text-xs font-mono text-muted-foreground">
+              
+              </p>
+            </div>
+          </div>
+        </header>
 
       {/* Main Content */}
       <main className="flex flex-col lg:flex-row gap-4 p-4 lg:p-6">
@@ -433,5 +460,6 @@ export function Tracker() {
         />
       </main>
     </div>
+    </>
   )
 }

@@ -278,6 +278,8 @@ export function TrackingCanvas({ settings, onTrackingUpdate, fps }: TrackingCanv
         faceX: face ? parseFloat(face.centerX.toFixed(3)) : 0,
         faceY: face ? parseFloat(face.centerY.toFixed(3)) : 0,
         personDetected: !!pose,
+        bodyX: pose ? parseFloat(((pose.x + pose.width / 2)).toFixed(3)) : 0,
+        bodyY: pose ? parseFloat(((pose.y + pose.height / 2)).toFixed(3)) : 0,
         fps,
         timestamp: Date.now(),
       }
